@@ -53,12 +53,20 @@ class TyrantMap {
 
     public byte[] get(String key) throws IOException {
         writeHeader(OPERATION_GET);
-        writer.writeInt(key.length()); //4 byte
-        writer.write(key.getBytes()); //key
+        writeKey(key);
         verifyStatus();
+        return readResults();
+    }
+
+    private byte[] readResults() throws IOException {
         int length = reader.readInt();
         byte[] results = new byte[length];
         reader.read(results);
         return results;
+    }
+
+    private void writeKey(String key) throws IOException {
+        writer.writeInt(key.length()); //4 byte
+        writer.write(key.getBytes()); //key
     }
 }
