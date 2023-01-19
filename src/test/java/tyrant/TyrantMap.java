@@ -21,6 +21,10 @@ class TyrantMap {
 
         writeHeader(OPERATION_PUT);
         writeKeyValue(key, value);
+        verifyStatus();
+    }
+
+    private void verifyStatus() throws IOException {
         int status = reader.read();
         assertThat(status, is(0));
     }
@@ -51,8 +55,7 @@ class TyrantMap {
         writeHeader(OPERATION_GET);
         writer.writeInt(key.length()); //4 byte
         writer.write(key.getBytes()); //key
-        int status = reader.read();
-        assertThat(status, is(0));
+        verifyStatus();
         int length = reader.readInt();
         byte[] results = new byte[length];
         reader.read(results);
