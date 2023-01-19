@@ -17,54 +17,46 @@ class TyrantMap {
     private DataOutputStream writer;
     private DataInputStream reader;
 
+    public void open() throws IOException {
+        socket = new Socket("localhost", 1978);
+        writer = new DataOutputStream(socket.getOutputStream());
+        reader = new DataInputStream(socket.getInputStream());
+    }
     public void put(String key, String value) throws IOException {
 
         writeHeader(OPERATION_PUT);
         writeKeyValue(key, value);
         verifyStatus();
     }
-
-    private void verifyStatus() throws IOException {
-        int status = reader.read();
-        assertThat(status, is(0));
-    }
-
-    private void writeKeyValue(String key, String value) throws IOException {
-        writer.writeInt(key.length()); //4 byte
-        writer.writeInt(value.length()); //4 byte
-        writer.write(key.getBytes()); //key
-        writer.write(value.getBytes()); //value
-    }
-
-    private void writeHeader(int operationPut) throws IOException {
-        writer.write(OPERATION_PREFIX);
-        writer.write(operationPut);
-    }
-
-    public void open() throws IOException {
-        socket = new Socket("localhost", 1978);
-        writer = new DataOutputStream(socket.getOutputStream());
-        reader = new DataInputStream(socket.getInputStream());
-    }
-
-    public void close() throws IOException {
-        socket.close();
-    }
-
     public byte[] get(String key) throws IOException {
         writeHeader(OPERATION_GET);
         writeKey(key);
         verifyStatus();
         return readResults();
     }
-
+    public void close() throws IOException {
+        socket.close();
+    }
+    private void verifyStatus() throws IOException {
+        int status = reader.read();
+        assertThat(status, is(0));
+    }
+    private void writeKeyValue(String key, String value) throws IOException {
+        writer.writeInt(key.length()); //4 byte
+        writer.writeInt(value.length()); //4 byte
+        writer.write(key.getBytes()); //key
+        writer.write(value.getBytes()); //value
+    }
+    private void writeHeader(int operationPut) throws IOException {
+        writer.write(OPERATION_PREFIX);
+        writer.write(operationPut);
+    }
     private byte[] readResults() throws IOException {
         int length = reader.readInt();
         byte[] results = new byte[length];
         reader.read(results);
         return results;
     }
-
     private void writeKey(String key) throws IOException {
         writer.writeInt(key.length()); //4 byte
         writer.write(key.getBytes()); //key
