@@ -58,7 +58,7 @@ class TyrantMap {
 
     private void writeKeyValue(String key, String value) throws IOException {
         writer.writeInt(key.length()); //4 byte
-        writeKey(value);
+        writeKey(key);
         writer.write(value.getBytes()); //value
     }
 
