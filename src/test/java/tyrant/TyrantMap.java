@@ -19,14 +19,18 @@ class TyrantMap {
 
     public void put(String key, String value) throws IOException {
 
-        writer.write(OPERATION_PREFIX);
-        writer.write(OPERATION_PUT);
+        writeHeader(OPERATION_PUT);
         writer.writeInt(key.length()); //4 byte
         writer.writeInt(value.length()); //4 byte
         writer.write(key.getBytes()); //key
         writer.write(value.getBytes()); //value
         int status = reader.read();
         assertThat(status, is(0));
+    }
+
+    private void writeHeader(int operationPut) throws IOException {
+        writer.write(OPERATION_PREFIX);
+        writer.write(operationPut);
     }
 
     public void open() throws IOException {
@@ -40,8 +44,7 @@ class TyrantMap {
     }
 
     public byte[] get(String key) throws IOException {
-        writer.write(OPERATION_PREFIX);
-        writer.write(OPERATION_GET);
+        writeHeader(OPERATION_GET);
         writer.writeInt(key.length()); //4 byte
         writer.write(key.getBytes()); //key
         int status = reader.read();
