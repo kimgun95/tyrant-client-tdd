@@ -5,7 +5,6 @@ import org.junit.Test;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 
 import static org.hamcrest.core.Is.is;
@@ -21,7 +20,9 @@ public class TyrantTest {
 //        t.put("key", "value");
 //        assertThat(t.get("key"), is("value"));
 
-        new TyrantMap().put();
+        TyrantMap tyrantMap = new TyrantMap();
+        tyrantMap.open();
+        tyrantMap.put("key", "value");
 
     }
 
@@ -33,21 +34,22 @@ public class TyrantTest {
         private DataOutputStream writer;
         private InputStream reader;
 
-        public void put() throws IOException {
-            String key = "key";
-            String value = "value";
-            socket = new Socket("localhost", 1978);
-            writer = new DataOutputStream(socket.getOutputStream());
+        public void put(String key, String value) throws IOException {
+
             writer.write(OPERATION_PREFIX);
             writer.write(OPERATION_PUT);
             writer.writeInt(key.length()); //4 byte
             writer.writeInt(value.length()); //4 byte
             writer.write(key.getBytes()); //key
             writer.write(value.getBytes()); //value
-
-            reader = socket.getInputStream();
             int status = reader.read();
             assertThat(status, is(0));
+        }
+
+        private void open() throws IOException {
+            socket = new Socket("localhost", 1978);
+            writer = new DataOutputStream(socket.getOutputStream());
+            reader = socket.getInputStream();
         }
     }
 }
