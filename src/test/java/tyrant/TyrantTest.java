@@ -2,6 +2,7 @@ package tyrant;
 
 import org.junit.Test;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,24 +30,18 @@ public class TyrantTest {
         public static final int OPERATION_PREFIX = 0xC8;
         public static final int OPERATION_PUT = 0x10;
         private Socket socket;
-        private OutputStream writer;
+        private DataOutputStream writer;
         private InputStream reader;
 
         public void put() throws IOException {
             String key = "key";
             String value = "value";
             socket = new Socket("localhost", 1978);
-            writer = socket.getOutputStream();
+            writer = new DataOutputStream(socket.getOutputStream());
             writer.write(OPERATION_PREFIX);
             writer.write(OPERATION_PUT);
-            writer.write(0);
-            writer.write(0);
-            writer.write(0);
-            writer.write(3); //4 byte key length
-            writer.write(0);
-            writer.write(0);
-            writer.write(0);
-            writer.write(5); //4 byte value length
+            writer.writeInt(key.length()); //4 byte
+            writer.writeInt(value.length()); //4 byte
             writer.write(key.getBytes()); //key
             writer.write(value.getBytes()); //value
 
