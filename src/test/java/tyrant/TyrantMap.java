@@ -20,12 +20,16 @@ class TyrantMap {
     public void put(String key, String value) throws IOException {
 
         writeHeader(OPERATION_PUT);
+        writeKeyValue(key, value);
+        int status = reader.read();
+        assertThat(status, is(0));
+    }
+
+    private void writeKeyValue(String key, String value) throws IOException {
         writer.writeInt(key.length()); //4 byte
         writer.writeInt(value.length()); //4 byte
         writer.write(key.getBytes()); //key
         writer.write(value.getBytes()); //value
-        int status = reader.read();
-        assertThat(status, is(0));
     }
 
     private void writeHeader(int operationPut) throws IOException {
