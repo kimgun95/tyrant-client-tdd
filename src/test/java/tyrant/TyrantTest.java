@@ -23,6 +23,7 @@ public class TyrantTest {
         TyrantMap tyrantMap = new TyrantMap();
         tyrantMap.open();
         tyrantMap.put("key", "value");
+        tyrantMap.close();
 
     }
 
@@ -50,6 +51,10 @@ public class TyrantTest {
             socket = new Socket("localhost", 1978);
             writer = new DataOutputStream(socket.getOutputStream());
             reader = socket.getInputStream();
+        }
+
+        public void close() throws IOException {
+            socket.close();
         }
     }
 }
