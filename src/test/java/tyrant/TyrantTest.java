@@ -1,7 +1,7 @@
 package tyrant;
 
 import org.example.tyrant.TyrantMap;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 
