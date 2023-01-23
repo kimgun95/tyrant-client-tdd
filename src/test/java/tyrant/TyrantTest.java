@@ -1,11 +1,9 @@
 package tyrant;
 
-import org.junit.After;
-import org.junit.Before;
+import org.example.tyrant.TyrantMap;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.Socket;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;

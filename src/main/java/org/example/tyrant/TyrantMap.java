@@ -1,4 +1,4 @@
-package tyrant;
+package org.example.tyrant;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -8,7 +8,7 @@ import java.net.Socket;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-class TyrantMap {
+public class TyrantMap {
 
     public static final int OPERATION_PREFIX = 0xC8;
     public static final int OPERATION_PUT = 0x10;
