@@ -12,16 +12,16 @@ import static org.hamcrest.core.Is.is;
 
 public class TyrantTest {
 
-//    private TyrantMap tyrantMap;
-//    @Before
-//    public void setUp() throws IOException {
-//        tyrantMap = new TyrantMap();
-//        tyrantMap.open();
-//    }
-//    @After
-//    public void tearDown() throws IOException {
-//        tyrantMap.close();
-//    }
+    private TyrantMap tyrantMap;
+    @Before
+    public void setUp() throws IOException {
+        tyrantMap = new TyrantMap();
+        tyrantMap.open();
+    }
+    @After
+    public void tearDown() throws IOException {
+        tyrantMap.close();
+    }
     @Test
     public void getRetrievesWhatWasPut() throws IOException {
 //        Tyrant t = new Tyrant();
@@ -30,7 +30,7 @@ public class TyrantTest {
 
         new Socket("localhost", 1978);
 
-//        tyrantMap.put("key", "value");
-//        assertThat(tyrantMap.get("key"), is("value".getBytes()));
+        tyrantMap.put("key", "value");
+        assertThat(tyrantMap.get("key"), is("value".getBytes()));
     }
 }
